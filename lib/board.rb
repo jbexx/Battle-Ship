@@ -61,8 +61,6 @@ class Board
 
   def valid_cons_letters?(letters)
     letters.each_cons(2) do |first, second|
-      p "First Letter.ord #{first.ord}"
-      p "Second Letter.ord - 1:: #{second.ord - 1}"
       if first.ord != second.ord - 1
         return false
       end
@@ -72,8 +70,6 @@ class Board
 
   def valid_cons_numbers?(numbers)
     numbers.each_cons(2) do |first, second|
-      p "First Number #{first.to_i}"
-      p "Second Number - 1:: #{second.to_i - 1}"
       if first.to_i != second.to_i - 1
         return false
       end
@@ -110,8 +106,12 @@ class Board
   end
 
   def place(ship, coords)
-    if valid_placement?(ship,coords)
+    if !valid_placement?(ship,coords)
+      return "Ivalid Placement"
+    end
 
+    coords.each do |coord|
+      @cells[coord].place_ship(ship)
     end
   end
 
