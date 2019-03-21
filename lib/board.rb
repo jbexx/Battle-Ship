@@ -77,8 +77,21 @@ class Board
     return true
   end
 
+  def cell_has_ship?(coords)
+    coords.each do |coord|
+      if @cells[coord].ship != nil
+        return true
+      end
+      return false
+    end
+  end
+
   def valid_placement?(ship, coords)
     if coords.count != ship.length
+      return false
+    end
+
+    if cell_has_ship?(coords)
       return false
     end
 
