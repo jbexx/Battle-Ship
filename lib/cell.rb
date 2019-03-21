@@ -34,7 +34,7 @@ class Cell
 
     if show && @ship && !@hit
       return "S"
-    else
+    elseif show && !@ship
       return "~"
     end
 
