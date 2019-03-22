@@ -86,6 +86,24 @@ class Board
     end
   end
 
+  def seperate_numbers_letters(coords)
+    letters = []
+    numbers = []
+
+    coords.each do |coord|
+      split_coords = coord.split(//)
+      letters << split_coords[0]
+      numbers << split_coords[1]
+    end
+
+    coord_data = Hash.new
+
+    coord_data['letters'] = letters
+    coord_data['numbers'] = numbers
+
+    return coord_data
+  end
+
   def valid_placement?(ship, coords)
     if coords.count != ship.length
       return false
@@ -95,14 +113,16 @@ class Board
       return false
     end
 
-    letters = []
-    numbers = []
+    coord_data = seperate_numbers_letters(coords)
 
-    coords.each do |coord|
-      split_coords = coord.split(//)
-      letters << split_coords[0]
-      numbers << split_coords[1]
-    end
+    letters = coord_data['letters']
+    numbers = coord_data['numbers']
+
+    # coords.each do |coord|
+    #   split_coords = coord.split(//)
+    #   letters << split_coords[0]
+    #   numbers << split_coords[1]
+    # end
 
     if letters.all? { |x| x == letters[0] }
       if valid_cons_numbers?(numbers)
@@ -126,6 +146,22 @@ class Board
     coords.each do |coord|
       @cells[coord].place_ship(ship)
     end
+  end
+
+  def render(show = false)
+    coord_data = seperate_numbers_letters(@cells.keys)
+    letters = coord_data['letters']
+    single_numbers = coord_data['numbers'].uniq
+    render_string = " #{single_numbers.join(' ')}"
+
+    @cells.keys.each_with_index { |coord, i|
+      if letters[i] != letters[i - 1]
+        render_string.concat(" \n#{letters[i]}")
+      end
+      render_string.concat(" #{@cells[coord].render(show)}")
+    }
+     
+    render_string
   end
 
 end

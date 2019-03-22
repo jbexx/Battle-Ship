@@ -49,4 +49,29 @@ class BoardTest < Minitest::Test
     assert_equal false, board.valid_placement?(cruiser, ["A1", "B2", "C3"])
   end
 
+  def test_ship_gets_placed
+    board = Board.new
+    cruiser = Ship.new("Cruiser", 3)
+
+    assert_nil nil, board.cells["A1"].ship
+
+    board.place(cruiser, ["A1", "B1", "C1"])
+
+    refute_nil board.cells["A1"].ship
+  end
+
+  def test_board_renders
+    board = Board.new
+    cruiser = Ship.new("Cruiser", 3)
+    board.place(cruiser, ["A1", "B1", "C1"])
+
+    board_string = " 1 2 3 4 \nA . . . . \nB . . . . \nC . . . . \nD . . . ."
+
+    assert_equal board_string, board.render
+
+    board_with_ship = " 1 2 3 4 \nA S . . . \nB S . . . \nC S . . . \nD . . . ."
+    
+    assert_equal board_with_ship, board.render(true)
+  end
+
 end
